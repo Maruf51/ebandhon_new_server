@@ -96,6 +96,7 @@ client.connect(error => {
     const userDataCollection = client.db("bandhon_ecommerce").collection("user_data")
     const adminDataCollection = client.db("bandhon_ecommerce").collection("admin_mail")
     const requestedProductsCollection = client.db("bandhon_ecommerce").collection("requested_products")
+    const usedProductsCollection = client.db("bandhon_ecommerce").collection("used_products")
 
     // app.get('/get-admin-mail', (req, res) => {
     //     adminDataCollection.find({})
@@ -145,6 +146,23 @@ client.connect(error => {
             res.send(result.ops[0])
         })
         .catch(err => console.log(err))
+    })
+
+    app.post('/add-used-product', (req, res) => {
+        const data = req.body
+
+        usedProductsCollection.insertOne(data)
+        .then(result => {
+            res.send(result)
+        })
+        .catch(err => console.log(err))
+    })
+
+    app.get('/get-used-products', (req, res) => {
+        usedProductsCollection.find({})
+        .toArray((err, docs) => {
+            res.send(docs)
+        })
     })
 
     app.post('/upload-profile-image/id', (req, res) => {
