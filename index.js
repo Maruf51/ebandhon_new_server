@@ -93,6 +93,34 @@ client.connect(error => {
         .catch(err => console.log(err))
     })
 
+    app.post('/delete-product', (req, res) => {
+        const categoryName = req.body.category
+        const id = req.body.id
+
+        categoryCollection.find({})
+        .toArray((err, docs) => {
+            const selectedCategory = docs.find(category => category.name === categoryName)
+            const selectedCategoryProducts = selectedCategory?.products
+            
+            let newData = []
+            for (let i = 0; i < selectedCategoryProducts.length; i++) {
+                if(selectedCategoryProducts[i].id !== id) {
+                    newData.push(selectedCategoryProducts[i])
+                }
+            }
+            categoryCollection.updateOne(
+                {
+                    _id: ObjectId(selectedCategory._id)
+                },
+                {
+                    $set: {products: newData}
+                }
+            )
+            .then(result =>  res.send({deleted: true}))
+            .catch(err => console.log(err))
+        })
+    })
+
     const userDataCollection = client.db("bandhon_ecommerce").collection("user_data")
     const adminDataCollection = client.db("bandhon_ecommerce").collection("admin_mail")
     const requestedProductsCollection = client.db("bandhon_ecommerce").collection("requested_products")
