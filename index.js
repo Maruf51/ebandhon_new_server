@@ -180,13 +180,11 @@ client.connect(error => {
 
     app.post('/reseller-request', (req, res) => {
         const data = req.body
-        console.log(data, 'data')
-        // userDataCollection.insertOne(data)
-        // .then(result => {
-        //     res.send(result.ops[0])
-        // })
-        // .catch(err => console.log(err))
-        res.send(data)
+        resellerRequestCollection.insertOne(data)
+        .then(result => {
+            res.send(result)
+        })
+        .catch(err => console.log(err))
     })
 
     app.post('/add-reseller-mail', (req, res) => {
