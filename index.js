@@ -126,6 +126,7 @@ client.connect(error => {
     const requestedProductsCollection = client.db("bandhon_ecommerce").collection("requested_products")
     const usedProductsCollection = client.db("bandhon_ecommerce").collection("used_products")
     const resellerMailCollection = client.db("bandhon_ecommerce").collection("reseller_email")
+    const resellerRequestCollection = client.db("bandhon_ecommerce").collection("reseller_request")
 
     // app.get('/get-admin-mail', (req, res) => {
     //     adminDataCollection.find({})
@@ -175,6 +176,17 @@ client.connect(error => {
             res.send(result.ops[0])
         })
         .catch(err => console.log(err))
+    })
+
+    app.post('/reseller-request', (req, res) => {
+        const data = req.body
+        console.log(data, 'data')
+        // userDataCollection.insertOne(data)
+        // .then(result => {
+        //     res.send(result.ops[0])
+        // })
+        // .catch(err => console.log(err))
+        res.send(data)
     })
 
     app.post('/add-reseller-mail', (req, res) => {
